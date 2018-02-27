@@ -1,7 +1,7 @@
 export * from '@ionic/cloud';
 
 import { Observable } from 'rxjs';
-import { Injectable, ModuleWithProviders, NgModule, OpaqueToken } from '@angular/core';
+import { Injectable, ModuleWithProviders, NgModule, InjectionToken } from '@angular/core';
 import {
   Auth as _Auth,
   FacebookAuth as _FacebookAuth,
@@ -85,10 +85,10 @@ export class Push extends _Push implements IPush {
 @Injectable()
 export class User extends _User {}
 
-export const CloudSettingsToken = new OpaqueToken('CloudSettings');
+export const CloudSettingsToken = new InjectionToken('CloudSettings');
 
 export function provideContainer(settings: CloudSettings): DIContainer {
-  let container = new DIContainer();
+  const container = new DIContainer();
   container.config.register(settings);
   container.core.init();
   container.cordova.bootstrap();
@@ -117,7 +117,7 @@ export function provideUser(container: DIContainer): IUser {
 }
 
 export function providePush(container: DIContainer): IPush {
-  let push = container.push as IPush;
+  const push = container.push as IPush;
   push.rx = new PushRx(container.eventEmitter);
   return push;
 }
